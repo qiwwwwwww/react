@@ -1,0 +1,3 @@
+rootProject.name = 'pay_by_data'
+
+include ':app'
