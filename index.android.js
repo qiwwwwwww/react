@@ -10,21 +10,21 @@ import {
   View,
 } from 'react-native';
   
-  var REQUEST_URL ='http://129.31.203.119:3000/apps';
+var REQUEST_URL ='http://100.77.204.107:3000/apps';
 
 
 class pay_by_data extends Component {
     constructor(props) {
     super(props);
     this.state = {
-      objects: null,
-      // dataSource: new ListView.DataSource({
-      //   rowHasChanged: (row1, row2) => row1 !== row2,
-      };
-      // loaded: false, 
-  }
+      dataSource: new ListView.DataSource({
+         rowHasChanged: (row1, row2) => row1 !== row2,
+      }),
+       loaded: false, 
+  };
+}
 
-    componentDidMount() {
+  componentDidMount() {
     this.fetchData();
   }
 
@@ -33,7 +33,8 @@ class pay_by_data extends Component {
       .then((response) => response.json())
       .then((responseData) => {
         this.setState({
-          objects: responseData.objects,
+          dataSource: this.state.dataSource.cloneWithRows(responseData.objects),
+          loaded: true,
         });
       })
       .done();
@@ -41,13 +42,20 @@ class pay_by_data extends Component {
   }
 
 render() {
-  if(!this.state.objects) {
+  if(!this.state.loaded) {
     return this.renderLoadingView();
   }
 
-  var object = this.state.objects[0];
-  return this.renderObjects(object);
-}
+  return(
+    <ListView
+    dataSource={this.state.dataSource}
+    renderRow={this.renderObjects}
+    style={styles.listView}
+    />
+    );
+    } 
+
+  
 
 renderLoadingView() {
   return(
@@ -63,7 +71,7 @@ renderObjects(object){
   return(
     <View style={styles.container}>
       <Image
-      source={{uri:'http://129.31.203.119:3000/files/576717d3055bc00c1a773656'}}
+      source={{uri:'http://100.77.204.107:3000/files/576717d3055bc00c1a773656'}}
       style={styles.thumbnail}
       />
     <View style={styles.rightContainer}>
