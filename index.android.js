@@ -71,7 +71,7 @@ renderObjects(object){
   return(
     <View style={styles.container}>
       <Image
-      source={{uri:'http://100.77.204.107:3000/files/576717d3055bc00c1a773656'}}
+      source={{uri:'http://100.77.204.107:3000/files/5769dbed055bc0089ee59217'}}
       style={styles.thumbnail}
       />
     <View style={styles.rightContainer}>
@@ -105,7 +105,7 @@ var styles = StyleSheet.create({
     textAlign: 'center',
   },
   thumbnail: {
-    width: 53,
+    width: 81,
     height: 81,
   },
   listView: {
