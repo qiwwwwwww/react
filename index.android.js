@@ -8,79 +8,44 @@ import {
   StyleSheet,
   Text,
   View,
+  Navigator,
+  BackAndroid,
+  ToolbarAndroid
 } from 'react-native';
-  
-var REQUEST_URL ='http://100.77.204.107:3000/apps';
+
+var OutlinePage = require('./OutlinePage');
+var DetailPage = require('./DetailPage');
+
+const routestack = [{name:"page1", title:"outline"},{name: "page2", title:"detail"}];
+
+var _navigator;
+BackAndroid.addEventListener('hardwareBackPress', () => {
+  if (_navigator && _navigator.getCurrentRoutes().length > 1) {
+    _navigator.pop();
+    return true;
+  }
+  return false;
+});
 
 
-class pay_by_data extends Component {
-    constructor(props) {
-    super(props);
-    this.state = {
-      dataSource: new ListView.DataSource({
-         rowHasChanged: (row1, row2) => row1 !== row2,
-      }),
-       loaded: false, 
-  };
-}
+class pay_by_data extends Component{
 
-  componentDidMount() {
-    this.fetchData();
+  navigatorRenderScene(route, navigator){
+    _navigator=navigator;
+    switch(route.name){
+      case 'page1':
+        return (<OutlinePage navigator={navigator}  route={route}/>);
+      case 'page2':
+        return (<DetailPage navigator={navigator} route={route}/>);    
+    }
   }
 
-  fetchData(){
-    fetch(REQUEST_URL)
-      .then((response) => response.json())
-      .then((responseData) => {
-        this.setState({
-          dataSource: this.state.dataSource.cloneWithRows(responseData.objects),
-          loaded: true,
-        });
-      })
-      .done();
-      
-  }
-
-render() {
-  if(!this.state.loaded) {
-    return this.renderLoadingView();
-  }
-
-  return(
-    <ListView
-    dataSource={this.state.dataSource}
-    renderRow={this.renderObjects}
-    style={styles.listView}
-    />
-    );
-    } 
-
-  
-
-renderLoadingView() {
-  return(
-    <View style={styles.container}>
-    <Text>
-    Loading App。。。
-    </Text>
-    </View>
-    );
-}
-
-renderObjects(object){
-  return(
-    <View style={styles.container}>
-      <Image
-      source={{uri:'http://100.77.204.107:3000/files/5769dbed055bc0089ee59217'}}
-      style={styles.thumbnail}
+  render() {
+    return (
+      <Navigator
+        initialRoute={routestack[0]}
+        renderScene={this.navigatorRenderScene}
       />
-    <View style={styles.rightContainer}>
-      <Text style={styles.title}>{object.title}</Text>
-      <Text style={styles.year}>{object.category}</Text>
-    </View>
-
-  </View>
-
     );
   }
 }
@@ -88,31 +53,16 @@ renderObjects(object){
 var styles = StyleSheet.create({
   container: {
     flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF',
+    backgroundColor: 'white',
   },
-  rightContainer: {
-    flex: 1,
-  },
-  title: {
-    fontSize: 20,
-    marginBottom: 8,
-    textAlign: 'center',
-  },
-  year: {
-    textAlign: 'center',
-  },
-  thumbnail: {
-    width: 81,
-    height: 81,
-  },
-  listView: {
-    paddingTop: 20,
-    backgroundColor: '#F5FCFF',
+  toolbar: {
+    backgroundColor: '#a9a9a9',
+    height: 56,
   },
 });
-  
+
 AppRegistry.registerComponent('pay_by_data', () => pay_by_data);
+
+module.exports = pay_by_data;
+
 
