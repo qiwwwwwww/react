@@ -13,8 +13,8 @@ import {
   TouchableHighlight
 } from 'react-native';
   
-var REQUEST_URL ='http://100.77.204.241:3000/apps';
-
+var REQUEST_URL ='http://100.77.204.64:3000/appstore';
+var IMG_URL='http://100.77.204.64:3000/files/';
 
 class OutlinePage extends Component {
     constructor(props) {
@@ -83,6 +83,7 @@ gotoDetail(object){
 
 }
 renderObjects(object){
+
   return(
   <TouchableHighlight 
 		   		underlayColor='#dddddd'
@@ -90,7 +91,7 @@ renderObjects(object){
 		    >
     <View style={styles.container}>
       <Image
-      source={{uri:'http://100.77.204.241:3000/files/5769dbed055bc0089ee59217'}}
+      source={{uri:IMG_URL + object.img_id}}
       style={styles.thumbnail}
       />
 	    <View style={styles.rightContainer}>
@@ -116,7 +117,7 @@ var styles = StyleSheet.create({
     backgroundColor: '#F5FCFF',
   },
   rightContainer: {
-    flex: 1,
+    flex: 20,
   },
   title: {
     fontSize: 20,
@@ -129,10 +130,14 @@ var styles = StyleSheet.create({
   thumbnail: {
     width: 81,
     height: 81,
+    marginLeft:10,
+    marginBottom:10,
   },
   listView: {
     paddingTop: 20,
     backgroundColor: '#F5FCFF',
+    paddingBottom: 20,
+
   },
 });
   

@@ -1,3 +1,6 @@
+'use strict';
+
+
 import React, {
   Component,
 } from 'react';
@@ -7,12 +10,42 @@ import {
   StyleSheet,
   Text,
   View,
-  ToolbarAndroid
+  TouchableOpacity,
+  Linking
 } from 'react-native';
   
+var IMG_URL='http://100.77.204.64:3000/files/';
+
+var OpenURLButton = React.createClass({
+
+  propTypes: {
+    url: React.PropTypes.string,
+  },
+
+  handleClick: function() {
+    Linking.canOpenURL(this.props.url).then(supported => {
+      if (supported) {
+        Linking.openURL(this.props.url);
+      } else {
+        console.log('Don\'t know how to open URI: ' + this.props.url);
+      }
+    });
+  },
+
+  render: function() {
+    return (
+      <TouchableOpacity
+        onPress={this.handleClick}>
+        <View style={styles.button}>
+          <Text style={styles.text}>Open {this.props.url}</Text>
+        </View>
+      </TouchableOpacity>
+    );
+  }
+});
 
 class DetailPage extends Component{
-	
+
 	render(){
 		var object = this.props.route.passProps.Object;
 
@@ -20,13 +53,18 @@ class DetailPage extends Component{
 	      <ScrollView contentContainerStyle={styles.contentContainer}>
 	        <View style={styles.mainSection}>
 	          <Image
-	            source={{uri:'http://100.77.204.241:3000/files/5769dbed055bc0089ee59217'}}
+	            source={{uri:IMG_URL+object.img_id}}
 	            style={styles.detailsImage}
 	          />
 	          <View style={styles.rightPane}>
 	          	<Text>{object.title}</Text>
-				<Text>{object.category}</Text>
-	          </View>
+				      <Text>{object.category}</Text>
+
+              <OpenURLButton url={IMG_URL+object.apkid}/>
+
+              <OpenURLButton url={IMG_URL+object.img_id}/>
+
+            </View>
 	        </View>
 
 	        <View style={styles.separator} />
@@ -77,10 +115,15 @@ var styles = StyleSheet.create({
     flexDirection: 'row',
   },
   detailsImage: {
-    width: 134,
-    height: 200,
-    backgroundColor: '#eaeaea',
+    width: 160,
+    height: 160,
     marginRight: 10,
+  },
+  buttonImage: {
+    width: 80,
+    height: 20,
+    backgroundColor: '#eaeaea',
+    marginLeft: 10,
   },
   separator: {
     backgroundColor: 'rgba(0, 0, 0, 0.1)',
