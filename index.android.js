@@ -13,39 +13,23 @@ import {
   ToolbarAndroid
 } from 'react-native';
 
-var OutlinePage = require('./OutlinePage');
-var DetailPage = require('./DetailPage');
+var OutlineNav = require('./OutlineNav');
+var FrontNav = require('./FrontNav');
 
-const routestack = [{name:"page1", title:"outline"},{name: "page2", title:"detail"}];
+var ScrollableTabView = require('react-native-scrollable-tab-view');
 
-var _navigator;
-BackAndroid.addEventListener('hardwareBackPress', () => {
-  if (_navigator && _navigator.getCurrentRoutes().length > 1) {
-    _navigator.pop();
-    return true;
-  }
-  return false;
-});
 
 
 class pay_by_data extends Component{
 
-  navigatorRenderScene(route, navigator){
-    _navigator=navigator;
-    switch(route.name){
-      case 'page1':
-        return (<OutlinePage navigator={navigator}  route={route}/>);
-      case 'page2':
-        return (<DetailPage navigator={navigator} route={route}/>);    
-    }
-  }
-
-  render() {
+render(){
     return (
-      <Navigator
-        initialRoute={routestack[0]}
-        renderScene={this.navigatorRenderScene}
-      />
+      <ScrollableTabView tabBarPosition='bottom'
+            initialPage={0}>
+        <FrontNav tabLabel="React" />
+        <OutlineNav tabLabel="Flow" />
+      </ScrollableTabView>
+
     );
   }
 }
