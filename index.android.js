@@ -15,6 +15,7 @@ import {
 
 var OutlineNav = require('./OutlineNav');
 var FrontNav = require('./FrontNav');
+var SearchNav = require('./SearchNav');
 
 var ScrollableTabView = require('react-native-scrollable-tab-view');
 
@@ -26,8 +27,10 @@ render(){
     return (
       <ScrollableTabView tabBarPosition='bottom'
             initialPage={0}>
-        <FrontNav tabLabel="React" />
-        <OutlineNav tabLabel="Flow" />
+        <FrontNav tabLabel="Featured" />
+        <OutlineNav tabLabel="Popular" />
+        <SearchNav tabLabel="Search" />
+
       </ScrollableTabView>
 
     );

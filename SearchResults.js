@@ -13,17 +13,16 @@ import {
   TouchableHighlight
 } from 'react-native';
   
-var REQUEST_URL ='http://100.77.204.99:3000/appstore';
-var IMG_URL='http://100.77.204.99:3000/files/';
+var REQUEST_URL ='http://100.77.206.26:3000/appstore';
+var IMG_URL='http://100.77.206.26:3000/files/';
 
-class OutlinePage extends Component {
+class SearchResults extends Component {
     constructor(props) {
-    super(props);
-    this.state = {
-      dataSource: new ListView.DataSource({
-         rowHasChanged: (row1, row2) => row1 !== row2,
-      }),
-       loaded: false, 
+      super(props);
+      var dataSource= new ListView.DataSource({
+         rowHasChanged: (row1, row2) => row1 !== row2});
+      this.state = {
+          dataSource: dataSource.cloneWithRows(this.props.listings)
   };
 }
 
@@ -71,38 +70,37 @@ renderLoadingView() {
 }
 
 gotoDetail(object){
-	
-	this.props.navigator.push(
-	{
-		name: 'page2',
-		title: 'detail',
-		passProps:{Object: object},
-	}
+  
+  this.props.navigator.push(
+  {
+    name: 'page2',
+    title: 'detail',
+    passProps:{Object: object},
+  }
 
-	);
+  );
 
 }
-
 renderObjects(object){
 
   return(
   <TouchableHighlight 
-		   		underlayColor='#dddddd'
-		    	onPress={() => this.gotoDetail(object)}
-		    >
+          underlayColor='#dddddd'
+          onPress={() => this.gotoDetail(object)}
+        >
     <View style={styles.container}>
       <Image
       source={{uri:IMG_URL + object.img_id}}
       style={styles.thumbnail}
       />
-	    <View style={styles.rightContainer}>
-		    
-		      	<Text style={styles.title}>{object.title}</Text>
+      <View style={styles.rightContainer}>
+        
+            <Text style={styles.title}>{object.title}</Text>
 
-		    <Text style={styles.year}>{object.category}</Text>
-	    </View>
+        <Text style={styles.year}>{object.category}</Text>
+      </View>
 
-  	</View>
+    </View>
 </TouchableHighlight>
 
     );
@@ -142,4 +140,4 @@ var styles = StyleSheet.create({
   },
 });
   
-module.exports=OutlinePage;
+module.exports=SearchResults;
